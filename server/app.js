@@ -24,8 +24,9 @@ app.post('/login', async (req, res) => {
 
 app.post('/voterLogin', async (req, res) => {
     const result = await voter.findOne({ "voter_name": req.body.name, "voter_id": req.body.id })
-    if(result.voted === true){
-        res.send({voted : true})
+
+    if (result.voted === true) {
+        res.send(result)
     }
     else if (result) {
         res.send(result)
@@ -46,7 +47,7 @@ app.get('/getVoters', async (req, res) => {
 })
 
 app.get('/voterVoted', async (req, res) => {
-    const result = await voter.find({voted:true})
+    const result = await voter.find({ voted: true })
     if (result) {
         res.send(result)
     }
@@ -56,7 +57,7 @@ app.get('/voterVoted', async (req, res) => {
 })
 
 app.post('/addVoter', async (req, res) => {
-    const result = voter.create({ voter_name: req.body.name, voter_id: req.body.id, voted: req.body.voted })
+    const result = voter.create({ voter_name: req.body.name, voter_id: req.body.id, voted: req.body.voted, signature: req.body.signature, key_generated: false })
     if (result) {
         res.send(true)
     }
@@ -69,6 +70,36 @@ app.post('/voted', async (req, res) => {
     const result = await voter.updateOne({ voter_name: req.body.voter_name, voter_id: req.body.voter_id }, { $set: { voted: true } })
     if (result) {
         res.send(true)
+    }
+    else {
+        res.send(false)
+    }
+})
+
+app.post('/setKeyGenerated', async (req, res) => {
+    const result = await voter.updateOne({ voter_name: req.body.name, voter_id: req.body.id }, { $set: { key_generated: true } })
+    if (result) {
+        res.send(true)
+    }
+    else {
+        res.send(false)
+    }
+})
+
+app.post('/setSignature', async (req, res) => {
+    const result = await voter.updateOne({ voter_name: req.body.name, voter_id: req.body.id }, { $set: { signature: req.body.signature } })
+    if (result) {
+        res.send(true)
+    }
+    else {
+        res.send(false)
+    }
+})
+
+app.post('/getSignature', async (req, res) => {
+    const result = await voter.findOne({ voter_name: req.body.name, voter_id: req.body.id })
+    if (result) {
+        res.send(result)
     }
     else {
         res.send(false)

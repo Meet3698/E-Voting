@@ -17,7 +17,7 @@ class Admin extends Component {
     login = () => {
         axios.post('http://localhost:3001/login', this.state).then((response) => {
             if (response.data === true) {
-                AuthenticationService.setAdminSession(this.state.username,this.state.password)
+                AuthenticationService.setAdminSession(this.state.username, this.state.password)
                 window.location.href = '/admin/dashboard'
             } else {
                 alert("Invalid Credentials")

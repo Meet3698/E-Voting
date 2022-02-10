@@ -8,10 +8,11 @@ class ManageVoter extends Component {
         super(props)
         this.state = {
             voters: [],
-            flag : false,
-            name : "",
-            id : "",
-            voted: false
+            flag: false,
+            name: "",
+            id: "",
+            voted: false,
+            signature: ""
         }
     }
 
@@ -25,12 +26,12 @@ class ManageVoter extends Component {
         })
     }
 
-    onSubmit = ()  =>{
-        axios.post("http://localhost:3001/addVoter",this.state).then((response)=>{
-            if(response.data === true){
+    onSubmit = () => {
+        axios.post("http://localhost:3001/addVoter", this.state).then((response) => {
+            if (response.data === true) {
                 window.location.href = "/admin/dashboard"
             }
-            else{
+            else {
                 alert(response.data)
             }
         })
@@ -89,7 +90,7 @@ class ManageVoter extends Component {
                                     </tbody>
                                 </Table>
                                 <Button variant="primary" onClick={this.submit} >
-                                    Add Candidate
+                                    Add Voter
                                 </Button>
                             </Col>
                         </Container>

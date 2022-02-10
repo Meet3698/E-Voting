@@ -20,13 +20,13 @@ class Header extends Component {
 
         window.location = '/'
     }
-    
+
     render() {
         return (
             <div>
-                <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" style={{width : "100vw"}}>
-                <Navbar.Brand href="/">Blockchain Based E-Voting</Navbar.Brand>
-                    <Container>                        
+                <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" style={{ width: "100vw" }}>
+                    <Navbar.Brand href="/">Blockchain Based E-Voting</Navbar.Brand>
+                    <Container>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
                             <Nav className="me-auto">

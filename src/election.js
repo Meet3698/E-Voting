@@ -1,8 +1,8 @@
 import web3 from './web3'
 
-const address = "0x934653dEe7B1Dd3F0853e34a4C6CbC0c5134D57C";
+const address = "0xC86629d596686980053748090FE059A19f6fd340";
 
-const abi =[
+const abi = [
 	{
 		"inputs": [],
 		"stateMutability": "nonpayable",
@@ -251,13 +251,7 @@ const abi =[
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "adr",
-				"type": "address"
-			}
-		],
+		"inputs": [],
 		"name": "verifyVote",
 		"outputs": [
 			{
@@ -332,6 +326,35 @@ const abi =[
 			}
 		],
 		"name": "votes",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "candidateId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "adr",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "voting",
 		"outputs": [
 			{
 				"internalType": "uint256",

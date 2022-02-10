@@ -38,9 +38,9 @@ class Candidate extends Component {
 
     submit = () => {
         this.setState({
-            flag : true
+            flag: true
         })
-        
+
     }
 
     render() {

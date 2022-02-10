@@ -6,25 +6,25 @@ import AdminNavbar from './AdminNavbar';
 
 class AdminDashboard extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            candidates : [],
-            positions : [],
-            voters : [],
-            voted : []
+            candidates: [],
+            positions: [],
+            voters: [],
+            voted: []
         }
     }
 
-    async componentDidMount(){
+    async componentDidMount() {
         const candidate = await election.methods.getCandidate().call()
         this.setState({
-            candidates : candidate
+            candidates: candidate
         })
 
         const position = await election.methods.getPositions().call()
         this.setState({
-            positions : position
+            positions: position
         })
 
         axios.get('http://localhost:3001/getVoters').then((response) => {
