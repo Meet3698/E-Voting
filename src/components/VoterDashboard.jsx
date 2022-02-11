@@ -113,7 +113,7 @@ class VoterDashboard extends Component {
 
                 {
                     this.state.flag ?
-                        <Container>
+                        <Container className="mt-5">
                             <Form>
                                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                                     <Form.Control as="textarea" value={this.state.priv_key} rows={6} placeholder="Enter Your Private Key" onChange={event => this.setState({ priv_key: event.target.value })} />

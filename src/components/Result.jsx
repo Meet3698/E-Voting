@@ -29,7 +29,6 @@ class Result extends Component {
     }
 
 
-
     async componentDidMount() {
         if (AuthenticationService.isUserLoggedIn() === 2) {
             this.setState({
@@ -41,15 +40,19 @@ class Result extends Component {
         this.setState({
             votes: result
         })
+
+        if (result.length === 0) {
+            this.result()
+        }
     }
 
     result = () => {
         confirmAlert({
-            title: 'You have already Voted',
+            title: 'Nobody has voted yet',
             buttons: [
                 {
-                    label: 'View Votes',
-                    onClick: () => { }
+                    label: 'Close',
+                    onClick: () => window.location.href = "/"
                 }
             ]
         });
@@ -119,7 +122,7 @@ class Result extends Component {
                     {
                         this.state.flag ?
                             this.state.flag1 ?
-                                <Container>
+                                <Container className="mt-5">
                                     {this.state.flag2 ?
                                         this.state.alert ?
                                             <Alert variant={"success"}>
@@ -131,7 +134,6 @@ class Result extends Component {
                                             </Alert>
                                         :
                                         <>
-                                            <p id="alert"></p>
                                         </>
                                     }
                                     <Form>
@@ -164,7 +166,6 @@ class Result extends Component {
                                 </Container>
                             :
                             <Container className="mt-5">
-                                {this.result()}
                                 <Table striped bordered hover variant="dark">
                                     <thead>
                                         <tr>

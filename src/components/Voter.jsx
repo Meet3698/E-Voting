@@ -22,7 +22,18 @@ class Voter extends Component {
         }
     }
 
-    
+    result = () => {
+        confirmAlert({
+            title: 'You have already Voted',
+            buttons: [
+                {
+                    label: 'View Votes',
+                    onClick: () => { }
+                }
+            ]
+        });
+    };
+
     dashboard = () => {
         confirmAlert({
             title: 'Have You Copy Keys?',
@@ -44,7 +55,7 @@ class Voter extends Component {
         axios.post('http://localhost:3001/voterLogin', { name: this.state.name, id: this.state.id }).then(async (response) => {
             if (response.data === false) {
                 this.setState({
-                    alert : true
+                    alert: true
                 })
             }
 
@@ -54,6 +65,7 @@ class Voter extends Component {
 
                 cookies.set('voter_name', response.data.voter_name)
                 cookies.set('voter_id', response.data.voter_id)
+                this.result()
                 window.location.href = '/result'
             }
             else {
