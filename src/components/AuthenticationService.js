@@ -26,8 +26,6 @@ class AuthenticationService {
         let voter_name = sessionStorage.getItem("voter_name")
         let voter_id = sessionStorage.getItem("voter_id")
 
-        console.log(this.isUserVoted())
-
         if (voter_name != null && voter_id != null) {
             if(this.isUserVoted() === "false"){
                 return 1

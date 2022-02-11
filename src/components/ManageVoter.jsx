@@ -19,7 +19,6 @@ class ManageVoter extends Component {
     async componentDidMount() {
 
         axios.get('http://localhost:3001/getVoters').then((response) => {
-            console.log(response.data);
             this.setState({
                 voters: response.data
             })

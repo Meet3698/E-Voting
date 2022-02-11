@@ -27,7 +27,6 @@ class Candidate extends Component {
     onSubmit = async (event) => {
         event.preventDefault();
         const accounts = await web3.eth.getAccounts();
-        console.log(accounts);
 
         await election.methods.addCandidate(this.state.name, this.state.partyName, this.state.position).send({
             from: accounts[0]

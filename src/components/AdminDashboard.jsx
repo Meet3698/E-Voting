@@ -28,14 +28,12 @@ class AdminDashboard extends Component {
         })
 
         axios.get('http://localhost:3001/getVoters').then((response) => {
-            console.log(response.data);
             this.setState({
                 voters: response.data
             })
         })
 
         axios.get('http://localhost:3001/voterVoted').then((response) => {
-            console.log(response.data);
             this.setState({
                 voted: response.data
             })

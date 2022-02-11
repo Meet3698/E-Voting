@@ -7,6 +7,7 @@ import axios from "axios";
 import Cookies from 'universal-cookie';
 import ellipticcurve from "starkbank-ecdsa";
 import { confirmAlert } from 'react-confirm-alert';
+import AuthenticationService from "./AuthenticationService";
 
 class Result extends Component {
 
@@ -22,8 +23,24 @@ class Result extends Component {
             priv_key: "",
             alert: false,
             modalShow: true,
-            setModalShow: false
+            setModalShow: false,
+            button: false
         }
+    }
+
+
+
+    async componentDidMount() {
+        if (AuthenticationService.isUserLoggedIn() === 2) {
+            this.setState({
+                button: true
+            })
+        }
+
+        const result = await election.methods.result().call();
+        this.setState({
+            votes: result
+        })
     }
 
     result = () => {
@@ -37,13 +54,6 @@ class Result extends Component {
             ]
         });
     };
-
-    async componentDidMount() {
-        const result = await election.methods.result().call();
-        this.setState({
-            votes: result
-        })
-    }
 
     verify = async () => {
         const accounts = await web3.eth.getAccounts()
@@ -66,7 +76,6 @@ class Result extends Component {
         try {
             privateKey = PrivateKey.fromPem(this.state.priv_key.toString())
         } catch (error) {
-            console.log(error);
             this.setState({
                 flag2: true,
                 alert: false
@@ -96,7 +105,6 @@ class Result extends Component {
         const result = await election.methods.verifyVote().call({
             from: accounts[0]
         })
-        console.log(result);
         this.setState({
             vote: result,
             flag: true
@@ -175,7 +183,12 @@ class Result extends Component {
                                         ))}
                                     </tbody>
                                 </Table>
-                                <Button onClick={this.view}>View Your Vote</Button>
+                                {this.state.button ?
+                                    <Button onClick={this.view}>View Your Vote</Button>
+                                    :
+                                    <></>
+
+                                }
                             </Container>
                     }
 

@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Form, Button, Container } from 'react-bootstrap'
+import { Form, Button, Container, Alert } from 'react-bootstrap'
 import axios from 'axios'
 import AuthenticationService from "./AuthenticationService";
 
@@ -10,7 +10,8 @@ class Admin extends Component {
         this.state = {
             username: "",
             password: "",
-            flag: false
+            flag: false,
+            alert: false
         }
     }
 
@@ -20,17 +21,24 @@ class Admin extends Component {
                 AuthenticationService.setAdminSession(this.state.username, this.state.password)
                 window.location.href = '/admin/dashboard'
             } else {
-                alert("Invalid Credentials")
+                this.setState({
+                    alert: true
+                })
             }
-        }).catch((err) => {
-            console.log(err);
-        });
+        })
     }
 
     render() {
         return (
             <div>
                 <Container style={{ padding: "8% 30%" }}>
+                    {this.state.alert ?
+                        <Alert variant={"danger"}>
+                            Invalid Credentials
+                        </Alert>
+                        :
+                        <></>
+                    }
                     <Form>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>
