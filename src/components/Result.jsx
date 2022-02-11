@@ -6,6 +6,7 @@ import web3 from "../web3"
 import axios from "axios";
 import Cookies from 'universal-cookie';
 import ellipticcurve from "starkbank-ecdsa";
+import { confirmAlert } from 'react-confirm-alert';
 
 class Result extends Component {
 
@@ -15,12 +16,27 @@ class Result extends Component {
             votes: [],
             flag: false,
             flag1: false,
+            flag2: false,
             address: "",
             vote: [],
             priv_key: "",
-            alert: false
+            alert: false,
+            modalShow: true,
+            setModalShow: false
         }
     }
+
+    result = () => {
+        confirmAlert({
+            title: 'You have already Voted',
+            buttons: [
+                {
+                    label: 'View Votes',
+                    onClick: () => { }
+                }
+            ]
+        });
+    };
 
     async componentDidMount() {
         const result = await election.methods.result().call();
@@ -45,7 +61,19 @@ class Result extends Component {
 
         var Ecdsa = ellipticcurve.Ecdsa;
         var PrivateKey = ellipticcurve.PrivateKey;
-        var privateKey = PrivateKey.fromPem(this.state.priv_key.toString())
+        var privateKey
+
+        try {
+            privateKey = PrivateKey.fromPem(this.state.priv_key.toString())
+        } catch (error) {
+            console.log(error);
+            this.setState({
+                flag2: true,
+                alert: false
+            })
+            return
+        }
+
         var publicKey = privateKey.publicKey()
 
         const cookies = new Cookies()
@@ -57,8 +85,10 @@ class Result extends Component {
         let resopnse = await axios.post('http://localhost:3001/getSignature', { name: voter_name, id: voter_id })
 
         this.setState({
-            alert : Ecdsa.verify(JSON.stringify(obj), Signature.fromDer(resopnse.data.signature), publicKey)
+            flag2: true,
+            alert: Ecdsa.verify(JSON.stringify(obj), Signature.fromDer(resopnse.data.signature), publicKey)
         })
+
     }
 
     view = async () => {
@@ -74,6 +104,7 @@ class Result extends Component {
     }
 
     render() {
+
         return (
             <div>
                 <Container className="mt-5">
@@ -81,18 +112,27 @@ class Result extends Component {
                         this.state.flag ?
                             this.state.flag1 ?
                                 <Container>
+                                    {this.state.flag2 ?
+                                        this.state.alert ?
+                                            <Alert variant={"success"}>
+                                                Your Vote is Signed and verified
+                                            </Alert>
+                                            :
+                                            <Alert variant={"danger"}>
+                                                Your Vote is not Signed or Private Key is not Correct
+                                            </Alert>
+                                        :
+                                        <>
+                                            <p id="alert"></p>
+                                        </>
+                                    }
                                     <Form>
                                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                                             <Form.Control as="textarea" value={this.state.priv_key} rows={6} placeholder="Enter Your Private Key" onChange={event => this.setState({ priv_key: event.target.value })} />
                                         </Form.Group>
-                                    </Form>
-                                    {this.state.alert ?
-                                        <Alert variant={"success"}>
-                                            Your Vote is Signed
-                                        </Alert>
-                                        :
                                         <Button onClick={this.verify}>Verify</Button>
-                                    }
+                                    </Form>
+
                                 </Container>
                                 :
                                 <Container className="mt-5">
@@ -116,6 +156,7 @@ class Result extends Component {
                                 </Container>
                             :
                             <Container className="mt-5">
+                                {this.result()}
                                 <Table striped bordered hover variant="dark">
                                     <thead>
                                         <tr>

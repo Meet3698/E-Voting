@@ -25,11 +25,13 @@ app.post('/login', async (req, res) => {
 app.post('/voterLogin', async (req, res) => {
     const result = await voter.findOne({ "voter_name": req.body.name, "voter_id": req.body.id })
 
-    if (result.voted === true) {
-        res.send(result)
-    }
-    else if (result) {
-        res.send(result)
+    if (result) {
+        if (result.voted === true) {
+            res.send(result)
+        }
+        else {
+            res.send(result)
+        }
     }
     else {
         res.send(false)

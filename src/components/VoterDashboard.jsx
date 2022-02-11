@@ -8,6 +8,7 @@ import web3 from "../web3";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import ellipticcurve from "starkbank-ecdsa";
+import AuthenticationService from "./AuthenticationService";
 var Ecdsa = ellipticcurve.Ecdsa;
 var PrivateKey = ellipticcurve.PrivateKey;
 
@@ -54,6 +55,7 @@ class VoterDashboard extends Component {
             from: accounts[0]
         })
 
+        AuthenticationService.setUserVoted()
         const vote = await election.methods.verifyVote().call({
             from: accounts[0]
         })
@@ -90,6 +92,8 @@ class VoterDashboard extends Component {
             from: accounts[0]
         })
 
+        AuthenticationService.setUserVoted()
+        
         const cookies = new Cookies()
 
         const voter_name = cookies.get('voter_name')
