@@ -3,6 +3,7 @@ import { Component } from 'react'
 import { Col, Row, Card, Container } from 'react-bootstrap';
 import election from '../election';
 import AdminNavbar from './AdminNavbar';
+import Chart from 'react-apexcharts'
 
 class AdminDashboard extends Component {
 
@@ -12,7 +13,19 @@ class AdminDashboard extends Component {
             candidates: [],
             positions: [],
             voters: [],
-            voted: []
+            voted: [],
+            options: {
+                chart: {
+                    id: 'apexchart-example'
+                },
+                xaxis: {
+                    categories: []
+                }
+            },
+            series: [{
+                name: 'VoteCount',
+                data: []
+            }]
         }
     }
 
@@ -20,6 +33,29 @@ class AdminDashboard extends Component {
         const candidate = await election.methods.getCandidate().call()
         this.setState({
             candidates: candidate
+        })
+
+
+        const name = []
+        const count = []
+        for (let i = 0; i < candidate.length; i++) {
+            name.push(candidate[i].name)
+            count.push(candidate[i].voteCount)
+        }
+
+        this.setState({
+            options: {
+                chart: {
+                    id: 'apexchart-example'
+                },
+                xaxis: {
+                    categories: name
+                }
+            },
+            series: [{
+                name: 'VoteCount',
+                data: count
+            }]
         })
 
         const position = await election.methods.getPositions().call()
@@ -66,8 +102,6 @@ class AdminDashboard extends Component {
                                         </Card.Body>
                                     </Card>
                                 </Col>
-                            </Row>
-                            <Row>
                                 <Col>
                                     <Card style={{ padding: "10% 10%", textAlign: "center", backgroundColor: "#343b41" }}>
                                         <Card.Body style={{ color: "white", textAlign: "left", paddingTop: "0%", paddingLeft: "2%" }}>
@@ -82,6 +116,13 @@ class AdminDashboard extends Component {
                                             <p style={{ fontWeight: "bold", fontSize: "55px" }}>{this.state.voted.length}</p>
                                             <h5>Voters Voted</h5>
                                         </Card.Body>
+                                    </Card>
+                                </Col>
+                            </Row>
+                            <Row className="mt-3 mb-3">
+                                <Col>
+                                    <Card style={{textAlign: "center" }}>
+                                        <Chart options={this.state.options} series={this.state.series} type="bar" height={300} />
                                     </Card>
                                 </Col>
                             </Row>

@@ -1,11 +1,12 @@
 import axios from "axios";
 import { Component } from "react";
-import { Alert, Button, Container, Form } from "react-bootstrap";
+import { Alert, Button, Container, Form, Card, Row, Col } from "react-bootstrap";
 import Cookies from 'universal-cookie';
 import AuthenticationService from "./AuthenticationService";
 import ellipticcurve from "starkbank-ecdsa";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import img from '../images/voting.webp'
 
 var PrivateKey = ellipticcurve.PrivateKey;
 
@@ -116,7 +117,7 @@ class Voter extends Component {
                             </Form>
                         </Container>
                         :
-                        <Container style={{ padding: "8% 30%" }}>
+                        <Container style={{ padding: "3% 15%" }}>
                             {this.state.alert ?
                                 <Alert variant={"danger"}>
                                     Invalid Credentials
@@ -124,18 +125,40 @@ class Voter extends Component {
                                 :
                                 <></>
                             }
-                            <Form>
-                                <Form.Group className="mb-3">
-                                    <Form.Control type="text" name="name" value={this.state.name} placeholder="Enter Name as per Voter Card" onChange={event => this.setState({ name: event.target.value })} />
-                                </Form.Group>
 
-                                <Form.Group className="mb-3">
-                                    <Form.Control type="text" name="id" value={this.state.id} placeholder="Enter Voter ID" onChange={event => this.setState({ id: event.target.value })} />
-                                </Form.Group>
-                                <Button variant="primary" type="button" onClick={this.login}>
-                                    Login
-                                </Button>
-                            </Form>
+                            <Card>
+                                <Card.Img variant="top" src={img} />
+                                <Card.Body>
+                                    <Form>
+                                        <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
+                                            <Form.Label column sm={2}>
+                                                Name
+                                            </Form.Label>
+                                            <Col sm={10}>
+                                                <Form.Control type="text" name="name" value={this.state.name} placeholder="Enter Name as per Voter Card" onChange={event => this.setState({ name: event.target.value })} />
+                                            </Col>
+                                        </Form.Group>
+
+                                        <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
+                                            <Form.Label column sm={2}>
+                                                VoterID
+                                            </Form.Label>
+                                            <Col sm={10}>
+                                                <Form.Control type="text" name="id" value={this.state.id} placeholder="Enter Voter ID" onChange={event => this.setState({ id: event.target.value })} />
+                                            </Col>
+                                        </Form.Group>
+
+                                        <Form.Group as={Row} className="mb-3">
+                                            <Col sm={{ span: 10, offset: 2 }}>
+                                                <Button variant="primary" type="button" onClick={this.login}>
+                                                    Login
+                                                </Button>
+                                            </Col>
+                                        </Form.Group>
+                                    </Form>
+                                </Card.Body>
+                            </Card>
+
                         </Container>
                 }
 
