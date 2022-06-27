@@ -15,6 +15,9 @@ const voter = mongoose.model('voter', {
     },
     key_generated: {
         type: Boolean
+    },
+    public_key: {
+        type: String
     }
 });
 

@@ -25,6 +25,7 @@ class Candidate extends Component {
     }
 
     onSubmit = async (event) => {
+        console.log(this.state);
         event.preventDefault();
         const accounts = await web3.eth.getAccounts();
 

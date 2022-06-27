@@ -20,7 +20,9 @@ class VoterDashboard extends Component {
             flag: false,
             id: "",
             name: "",
-            priv_key: ""
+            priv_key: "",
+            pub_key: "",
+            set_key: false
         }
     }
 
@@ -30,118 +32,127 @@ class VoterDashboard extends Component {
         this.setState({
             candidates: candidate
         })
+
+        const cookies = new Cookies()
+
+        const voter_name = cookies.get('voter_name')
+        const voter_id = cookies.get('voter_id')
+
+        await axios.post('http://localhost:3001/getPublicKey', { name: voter_name, id: voter_id }).then(async (response) => {
+            this.setState({
+                pub_key: response.data[0].public_key
+            })
+        })
     }
 
     submit = (id, name) => {
-        confirmAlert({
-            title: 'Do you want to sign this vote?',
-            // message: 'If yes',
-            buttons: [
-                {
-                    label: 'Yes',
-                    onClick: () => this.setState({ flag: true, id: id, name: name })
-                },
-                {
-                    label: 'No',
-                    onClick: () => this.vote(id, name)
-                }
-            ]
-        });
+        if (this.state.priv_key === "")
+            confirmAlert({
+                title: 'Please enter private key',
+            });
+        else {
+            this.setState({
+                id: id,
+                name: name
+            })
+            this.signedVote()
+        }
     };
 
     signedVote = async () => {
-        const accounts = await web3.eth.getAccounts()
-        await election.methods.vote(this.state.id, this.state.name).send({
-            from: accounts[0]
-        })
+        var privateKey = PrivateKey.fromPem(this.state.priv_key.toString())
+        let publicKey = privateKey.publicKey();
 
-        AuthenticationService.setUserVoted()
-        const vote = await election.methods.verifyVote().call({
-            from: accounts[0]
-        })
+        console.log(this.state.pub_key,publicKey.toPem());
+        if (this.state.pub_key === publicKey.toPem()) {
+            const accounts = await web3.eth.getAccounts()
+            await election.methods.vote(this.state.id, this.state.name).send({
+                from: accounts[0]
+            })
 
-        let obj = {
-            "vote": [{
-                "id": vote[0],
-                "name": vote[1],
-                "address": vote[2]
-            }]
+            AuthenticationService.setUserVoted()
+            const vote = await election.methods.verifyVote().call({
+                from: accounts[0]
+            })
+
+
+
+            let obj = {
+                "vote": [{
+                    "id": vote[0],
+                    "name": vote[1],
+                    "address": vote[2]
+                }]
+            }
+
+            let signature = Ecdsa.sign(JSON.stringify(obj), privateKey);
+
+            const cookies = new Cookies()
+
+            const voter_name = cookies.get('voter_name')
+            const voter_id = cookies.get('voter_id')
+
+            await axios.post('http://localhost:3001/setSignature', { name: voter_name, id: voter_id, signature: signature.toDer() })
+
+            await axios.post('http://localhost:3001/voted', { voter_name, voter_id }).then((response) => {
+                if (response.data === true) {
+
+                    window.location.href = "/result"
+                }
+            })
+        }
+        else{
+            confirmAlert({
+                title: 'You have entered wrong private key',
+            });
         }
 
-        var privateKey = PrivateKey.fromPem(this.state.priv_key.toString())
-        let signature = Ecdsa.sign(JSON.stringify(obj), privateKey);
-        
-        const cookies = new Cookies()
-
-        const voter_name = cookies.get('voter_name')
-        const voter_id = cookies.get('voter_id')
-
-        await axios.post('http://localhost:3001/setSignature', { name: voter_name, id: voter_id, signature: signature.toDer() })
-
-        await axios.post('http://localhost:3001/voted', { voter_name, voter_id }).then((response) => {
-            if (response.data === true) {
-
-                window.location.href = "/result"
-            }
-        })
     }
 
-    vote = async (id, name) => {
-        const accounts = await web3.eth.getAccounts()
-        await election.methods.vote(id, name).send({
-            from: accounts[0]
-        })
-
-        AuthenticationService.setUserVoted()
-        
-        const cookies = new Cookies()
-
-        const voter_name = cookies.get('voter_name')
-        const voter_id = cookies.get('voter_id')
-
-        await axios.post('http://localhost:3001/voted', { voter_name, voter_id }).then((response) => {
-            if (response.data === true) {
-
-                window.location.href = "/result"
-            }
-        })
-    }
 
     render() {
         return (
             <div>
 
                 {
-                    this.state.flag ?
-                        <Container className="mt-5">
-                            <Form>
+
+                    <Container className="mt-5">
+                        <Row>
+                            <Col style={{ border: "solid" }} xs={7}>
+                                <Row>
+                                    {this.state.candidates.map((candidate) => (
+                                        <Col>
+                                            <Card style={{ width: '18rem' }} className="mb-3 text-center">
+                                                <Card.Img variant="top" src={img} />
+                                                <Card.Body>
+                                                    <Card.Title>{candidate.name}</Card.Title>
+                                                    <Card.Text>{candidate.patryName}</Card.Text>
+                                                    <Button variant="primary" onClick={() => this.submit(candidate.id, candidate.name)}>Vote</Button>
+                                                </Card.Body>
+                                            </Card>
+                                        </Col>
+                                    ))
+                                    }
+                                </Row>
+                            </Col>
+                            <Col className="ml-5">
+
                                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                                    <Form.Control as="textarea" value={this.state.priv_key} rows={6} placeholder="Enter Your Private Key" onChange={event => this.setState({ priv_key: event.target.value })} />
+                                    <Form.Label>PUBLIC KEY</Form.Label>
+                                    <Form.Control disabled as="textarea" value={this.state.pub_key} rows={8} />
                                 </Form.Group>
-                            </Form>
-                            <Button onClick={this.signedVote}>Sign Vote</Button>
-                        </Container>
 
-                        :
-                        <Container className="mt-5">
-                            <Row>
+                                <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                    <Form.Label>PRIVATE KEY</Form.Label>
+                                    <Form.Control as="textarea" value={this.state.priv_key} rows={8} placeholder="Enter Your Private Key" onChange={event => this.setState({ priv_key: event.target.value })} />
+                                </Form.Group>
 
-                                {this.state.candidates.map((candidate) => (
-                                    <Col>
-                                        <Card style={{ width: '18rem' }} className="mb-3 text-center">
-                                            <Card.Img variant="top" src={img} />
-                                            <Card.Body>
-                                                <Card.Title>{candidate.name}</Card.Title>
-                                                <Card.Text>{candidate.patryName}</Card.Text>
-                                                <Button variant="primary" onClick={() => this.submit(candidate.id, candidate.name)}>Vote</Button>
-                                            </Card.Body>
-                                        </Card>
-                                    </Col>
-                                ))
-                                }
-                            </Row>
+                            </Col>
 
-                        </Container>
+
+                        </Row>
+
+                    </Container>
                 }
 
             </div>

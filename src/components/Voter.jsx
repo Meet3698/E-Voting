@@ -19,7 +19,8 @@ class Voter extends Component {
             priv_key: "",
             pub_key: "",
             flag: false,
-            alert: false
+            alert: false,
+            set_key: false
         }
     }
 
@@ -36,21 +37,41 @@ class Voter extends Component {
     };
 
     dashboard = () => {
-        confirmAlert({
-            title: 'Have You Copy Keys?',
-            message: 'if not then you cannot sign your vote',
-            buttons: [
-                {
-                    label: 'Yes',
-                    onClick: () => window.location.href = "/voter/dashboard"
-                },
-                {
-                    label: 'No',
-                    onClick: () => { }
-                }
-            ]
-        });
+        if (this.state.set_key !== false){
+            confirmAlert({
+                title: 'Have You Copy Keys?',
+                message: 'if not then you cannot sign your vote',
+                buttons: [
+                    {
+                        label: 'Yes',
+                        onClick: () => window.location.href = "/voter/dashboard"
+                    },
+                    {
+                        label: 'No',
+                        onClick: () => { }
+                    }
+                ]
+            });
+        }
+        else{
+            confirmAlert({
+                title: 'Please generate the keys',
+            });
+        }
     };
+
+    generate_key = () => {
+        let privateKey = new PrivateKey();
+        let publicKey = privateKey.publicKey();
+
+        axios.post('http://localhost:3001/setKeyGenerated', { name: this.state.name, id: this.state.id, public_key: publicKey.toPem() })
+
+        this.setState({
+            priv_key: privateKey.toPem(),
+            pub_key: publicKey.toPem(),
+            set_key: true
+        })
+    }
 
     login = () => {
         axios.post('http://localhost:3001/voterLogin', { name: this.state.name, id: this.state.id }).then(async (response) => {
@@ -77,14 +98,12 @@ class Voter extends Component {
                     cookies.set('voter_name', response.data.voter_name, { path: '/' })
                     cookies.set('voter_id', response.data.voter_id, { path: '/' })
 
-                    let privateKey = new PrivateKey();
-                    let publicKey = privateKey.publicKey();
+                    // let privateKey = new PrivateKey();
+                    // let publicKey = privateKey.publicKey();
 
-                    await axios.post('http://localhost:3001/setKeyGenerated', { name: this.state.name, id: this.state.id })
+                    // await axios.post('http://localhost:3001/setKeyGenerated', { name: this.state.name, id: this.state.id })
 
                     this.setState({
-                        priv_key: privateKey.toPem(),
-                        pub_key: publicKey.toPem(),
                         flag: true
                     })
                 } else {
@@ -96,26 +115,57 @@ class Voter extends Component {
             }
         })
     }
+
     render() {
         return (
             <div>
                 {
                     this.state.flag ?
-                        <Container style={{ padding: "3%" }}>
-                            <Form>
-                                <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                                    <Form.Label>PRIVATE KEY</Form.Label>
-                                    <Form.Control as="textarea" value={this.state.priv_key} rows={6} />
-                                </Form.Group>
+                        <div className="ml-5 mr-5">
+                            <div className="mb-3 mt-3">
+                                <h5>Now it's time to generate your keys which can help you to protect your privacy.</h5>
+                                <h5>When you're voting, you will use your public key and private key to vote. The system will save your public key into our database.</h5>
+                                <h5>Please attention that your <span style={{color:"red"}}>PRIVATE KEY WILL NOT SAVE INTO OUR SYSTEM.</span></h5>
+                                <h5>So, please save your private key value into your computer and keep it privately.</h5>
+                                <h5>If you lost or forgot your provate key before the vote date, you can generate a new one and save the new public key into our system.</h5>
+                            </div>
 
-                                <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                                    <Form.Label>PUBLIC KEY</Form.Label>
-                                    <Form.Control as="textarea" value={this.state.pub_key} rows={6} />
-                                </Form.Group>
+                            <Row >
+                                <Col xs={6} >
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                        <Form.Label>PUBLIC KEY</Form.Label>
+                                        <Form.Control disabled as="textarea" value={this.state.pub_key} rows={10} />
+                                    </Form.Group>
+                                </Col>
 
-                                <Button onClick={this.dashboard}>Dashboard</Button>
-                            </Form>
-                        </Container>
+                                <Col xs={6} >
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                        <Form.Label>PRIVATE KEY</Form.Label>
+                                        <Form.Control as="textarea" value={this.state.priv_key} rows={10} />
+                                    </Form.Group>
+                                </Col>
+
+                            </Row>
+                            <Button variant="primary" type="button" onClick={this.generate_key}>
+                                Generate Keys
+                            </Button>
+                            <Button className="ml-3" onClick={this.dashboard}>Dashboard</Button>
+                        </div >
+                        // <Container style={{ padding: "3%" }}>
+                        //     <Form>
+                        //         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                        //             <Form.Label>PRIVATE KEY</Form.Label>
+                        //             <Form.Control as="textarea" value={this.state.priv_key} rows={6} />
+                        //         </Form.Group>
+
+                        //         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                        //             <Form.Label>PUBLIC KEY</Form.Label>
+                        //             <Form.Control as="textarea" value={this.state.pub_key} rows={6} />
+                        //         </Form.Group>
+
+                        //         <Button onClick={this.dashboard}>Dashboard</Button>
+                        //     </Form>
+                        // </Container>
                         :
                         <Container style={{ padding: "3% 15%" }}>
                             {this.state.alert ?

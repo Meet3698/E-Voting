@@ -12,7 +12,8 @@ class ManageVoter extends Component {
             name: "",
             id: "",
             voted: false,
-            signature: ""
+            signature: "",
+            public_key: ""
         }
     }
 
