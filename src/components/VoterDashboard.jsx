@@ -60,54 +60,63 @@ class VoterDashboard extends Component {
     };
 
     signedVote = async () => {
-        var privateKey = PrivateKey.fromPem(this.state.priv_key.toString())
-        let publicKey = privateKey.publicKey();
+        var privateKey
+        var publicKey
 
-        console.log(this.state.pub_key,publicKey.toPem());
-        if (this.state.pub_key === publicKey.toPem()) {
-            const accounts = await web3.eth.getAccounts()
-            await election.methods.vote(this.state.id, this.state.name).send({
-                from: accounts[0]
-            })
-
-            AuthenticationService.setUserVoted()
-            const vote = await election.methods.verifyVote().call({
-                from: accounts[0]
-            })
+        try {
+            privateKey = PrivateKey.fromPem(this.state.priv_key.toString())
+            publicKey = privateKey.publicKey()
 
 
+            if (this.state.pub_key === publicKey.toPem()) {
+                const accounts = await web3.eth.getAccounts()
+                await election.methods.vote(this.state.id, this.state.name).send({
+                    from: accounts[0]
+                })
 
-            let obj = {
-                "vote": [{
-                    "id": vote[0],
-                    "name": vote[1],
-                    "address": vote[2]
-                }]
-            }
+                AuthenticationService.setUserVoted()
+                const vote = await election.methods.verifyVote().call({
+                    from: accounts[0]
+                })
 
-            let signature = Ecdsa.sign(JSON.stringify(obj), privateKey);
-
-            const cookies = new Cookies()
-
-            const voter_name = cookies.get('voter_name')
-            const voter_id = cookies.get('voter_id')
-
-            await axios.post('http://localhost:3001/setSignature', { name: voter_name, id: voter_id, signature: signature.toDer() })
-
-            await axios.post('http://localhost:3001/voted', { voter_name, voter_id }).then((response) => {
-                if (response.data === true) {
-
-                    window.location.href = "/result"
+                let obj = {
+                    "vote": [{
+                        "id": vote[0],
+                        "name": vote[1],
+                        "address": vote[2]
+                    }]
                 }
-            })
-        }
-        else{
+
+                let signature = Ecdsa.sign(JSON.stringify(obj), privateKey);
+
+                const cookies = new Cookies()
+
+                const voter_name = cookies.get('voter_name')
+                const voter_id = cookies.get('voter_id')
+
+                await axios.post('http://localhost:3001/setSignature', { name: voter_name, id: voter_id, signature: signature.toDer() })
+
+                await axios.post('http://localhost:3001/voted', { voter_name, voter_id }).then((response) => {
+                    if (response.data === true) {
+
+                        window.location.href = "/result"
+                    }
+                })
+            }
+            else {
+                confirmAlert({
+                    title: 'You have entered wrong private key',
+                });
+            }
+        } catch (error) {
             confirmAlert({
                 title: 'You have entered wrong private key',
             });
         }
 
+
     }
+
 
 
     render() {
@@ -118,7 +127,7 @@ class VoterDashboard extends Component {
 
                     <Container className="mt-5">
                         <Row>
-                            <Col style={{ border: "solid" }} xs={7}>
+                            <Col xs={7}>
                                 <Row>
                                     {this.state.candidates.map((candidate) => (
                                         <Col>
