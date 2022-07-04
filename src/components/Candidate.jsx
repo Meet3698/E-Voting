@@ -69,7 +69,7 @@ class Candidate extends Component {
                                             <Form.Control type="text" name="position" value={this.state.position} onChange={event => this.setState({ position: event.target.value })} placeholder="Position" />
                                         </Form.Group>
 
-                                        <div style={{ position: "absolute", marginLeft: "73%" }}>
+                                        <div style={{ position: "absolute", marginLeft: "70%" }}>
                                             <Button style={{ background: "linear-gradient(91.97deg, #00B3DB -3.9%, rgba(115, 103, 255, 0.63) 52.76%, rgba(173, 0, 255, 0.5) 107.11%)", borderRadius: "5px", color: "white" }} variant="light" type="submit">
                                                 Add Candidate
                                             </Button>
@@ -107,7 +107,7 @@ class Candidate extends Component {
                                             ))}
                                         </tbody>
                                     </Table>
-                                    <div style={{ position: "absolute", marginLeft: "82%" }}>
+                                    <div style={{ position: "absolute", marginLeft: "80%" }}>
                                         <Button style={{ background: "linear-gradient(91.97deg, #00B3DB -3.9%, rgba(115, 103, 255, 0.63) 52.76%, rgba(173, 0, 255, 0.5) 107.11%)", borderRadius: "5px", color: "white" }} variant="light" type="button" onClick={this.submit}>
                                             Add Candidate
                                         </Button>

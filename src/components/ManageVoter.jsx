@@ -67,7 +67,7 @@ class ManageVoter extends Component {
                                             <Form.Control type="text" name="id" value={this.state.id} onChange={event => this.setState({ id: event.target.value })} placeholder="Voter ID" />
                                         </Form.Group>
 
-                                        <div style={{ position: "absolute", marginLeft: "78%" }}>
+                                        <div style={{ position: "absolute", marginLeft: "77%" }}>
                                             <Button style={{ background: "linear-gradient(91.97deg, #00B3DB -3.9%, rgba(115, 103, 255, 0.63) 52.76%, rgba(173, 0, 255, 0.5) 107.11%)", borderRadius: "5px", color: "white" }} variant="light" type="submit">
                                                 Add Voter
                                             </Button>
@@ -97,7 +97,7 @@ class ManageVoter extends Component {
                                             ))}
                                         </tbody>
                                     </Table>
-                                    <div style={{ position: "absolute", marginLeft: "85%" }}>
+                                    <div style={{ position: "absolute", marginLeft: "84%" }}>
                                         <Button style={{ background: "linear-gradient(91.97deg, #00B3DB -3.9%, rgba(115, 103, 255, 0.63) 52.76%, rgba(173, 0, 255, 0.5) 107.11%)", borderRadius: "5px", color: "white" }} variant="light" type="button" onClick={this.submit}>
                                             Add Voter
                                         </Button>

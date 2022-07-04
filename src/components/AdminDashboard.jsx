@@ -110,12 +110,12 @@ class AdminDashboard extends Component {
                                     <Card style={{ textAlign: "center", backgroundColor: "white", boxShadow: "5px 10px 15px" }}>
                                         <Card.Body style={{ color: "#5065A8", textAlign: "left" }}>
                                             <Row>
-                                                <Col xs={9}>
-                                                    <h5>Total Candidates </h5>
+                                                <Col xs={10}>
+                                                    <h5>Total Candidates</h5>
                                                     <h2 style={{ fontWeight: "bold" }}>{this.state.candidates.length}</h2>
                                                 </Col >
-                                                <Col xs={3}>
-                                                    <img src={candidates} width="100%" alt=""/>
+                                                <Col xs={2}>
+                                                    <img src={candidates} width="250%" alt=""/>
                                                 </Col>
                                             </Row>
                                         </Card.Body>

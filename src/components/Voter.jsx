@@ -161,7 +161,7 @@ class Voter extends Component {
                                 </Col>
 
                                 <Col xs={4}>
-                                    <img src={key} width="429px" height="690pxpx" alt="" />
+                                    <img src={key} width="429px" height="730px" alt="" />
                                 </Col>
                             </Row>
                         </div>
