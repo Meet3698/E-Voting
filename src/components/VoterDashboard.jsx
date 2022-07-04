@@ -125,14 +125,14 @@ class VoterDashboard extends Component {
 
                 {
 
-                    <Container className="mt-5">
+                    <Container className="mt-3">
                         <Row>
-                            <Col xs={7}>
+                            <Col xs={7} style={{overflowY:"scroll",height: "75vh"}}>
                                 <Row>
                                     {this.state.candidates.map((candidate) => (
                                         <Col>
                                             <Card style={{ width: '18rem' }} className="mb-3 text-center">
-                                                <Card.Img variant="top" src={img} />
+                                                <Card.Img variant="top" src={img} alt=""/>
                                                 <Card.Body>
                                                     <Card.Title>{candidate.name}</Card.Title>
                                                     <Card.Text>{candidate.patryName}</Card.Text>

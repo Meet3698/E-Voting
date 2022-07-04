@@ -1,8 +1,8 @@
 import { Component } from "react";
-import { Form, Button, Container, Alert, Card, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Alert } from 'react-bootstrap'
 import axios from 'axios'
 import AuthenticationService from "./AuthenticationService";
-import img from '../images/voting.webp'
+import img from '../images/login.png'
 
 
 class Admin extends Component {
@@ -31,50 +31,57 @@ class Admin extends Component {
 
     render() {
         return (
-            <div>
-                <Container style={{ padding: "3% 15%" }}>
-                    {this.state.alert ?
-                        <Alert variant={"danger"}>
-                            Invalid Credentials
-                        </Alert>
-                        :
-                        <></>
-                    }
+            <div style={{ margin: "1% 22% 0% 22%", boxShadow: "5px 10px 20px", borderRadius: "10px" }}>
+                <Row >
+                    <Col >
+                        <Row style={{ height: "40%", textAlign: "center" }}>
+                            <h1 style={{ margin: "30% 0% 0% 5%" }}>Welcome</h1>
 
-                    <Card>
-                        <Card.Img variant="top" src={img} />
-                        <Card.Body>
-                            <Form>
-                                <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-                                    <Form.Label column sm={2}>
-                                        Email
-                                    </Form.Label>
-                                    <Col sm={10}>
+                        </Row>
+                        <Row style={{ height: "50%", padding: "10%" }}>
+                            <Row >
+                                {this.state.alert ?
+
+                                    // alert("Invalid Credentials")
+
+                                    <Alert variant={"danger"} style={{ marginLeft: "10%" }}>
+                                        Invalid Credentials
+                                    </Alert>
+                                    :
+                                    <></>
+                                }
+                            </Row>
+                            <Row style={{ marginLeft: "5%", padding: "5%" }}>
+
+                                <Form>
+                                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
+                                        {/* <Form.Label column sm={2}>
+                                                Email
+                                            </Form.Label> */}
+
                                         <Form.Control type="text" name="username" value={this.state.username} placeholder="Enter email" onChange={event => this.setState({ username: event.target.value })} />
-                                    </Col>
-                                </Form.Group>
+                                    </Form.Group>
 
-                                <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                                    <Form.Label column sm={2}>
-                                        Password
-                                    </Form.Label>
-                                    <Col sm={10}>
+                                    <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
+                                        {/* <Form.Label column sm={2}>
+                                                Password
+                                            </Form.Label> */}
                                         <Form.Control type="password" name="password" value={this.state.password} placeholder="Password" onChange={event => this.setState({ password: event.target.value })} />
-                                    </Col>
-                                </Form.Group>
+                                    </Form.Group>
 
-                                <Form.Group as={Row} className="mb-3">
-                                    <Col sm={{ span: 10, offset: 2 }}>
-                                        <Button variant="primary" type="button" onClick={this.login}>
+                                    <Form.Group as={Row} className="mb-3">
+                                        <Button style={{ position: "absolute", width: "75%", background: "linear-gradient(91.97deg, #00B3DB -3.9%, rgba(115, 103, 255, 0.63) 52.76%, rgba(173, 0, 255, 0.5) 107.11%)", borderRadius: "5px", color: "white" }} variant="light" type="button" onClick={this.login}>
                                             Login
                                         </Button>
-                                    </Col>
-                                </Form.Group>
-                            </Form>
-                        </Card.Body>
-                    </Card>
-
-                </Container>
+                                    </Form.Group>
+                                </Form>
+                            </Row>
+                        </Row>
+                    </Col>
+                    <Col>
+                        <img src={img} alt="" width="100%" />
+                    </Col>
+                </Row>
             </div >
         );
     }

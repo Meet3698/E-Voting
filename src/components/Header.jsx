@@ -1,7 +1,8 @@
 import { Component } from "react";
 import AuthenticationService from "./AuthenticationService";
-const { Container, Navbar, Nav, Button } = require("react-bootstrap")
-
+import logo from '../images/logo.png'
+import logout from '../images/Logout.png'
+import { Container, Navbar, Nav, Button } from "react-bootstrap"
 
 class Header extends Component {
 
@@ -23,15 +24,15 @@ class Header extends Component {
     render() {
         return (
             <div>
-                <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" style={{ width: "100vw" }}>
-                    <Navbar.Brand href="/">Blockchain Based E-Voting</Navbar.Brand>
+                <Navbar collapseOnSelect expand="lg" bg="white" >
+                    <Navbar.Brand href="/"><img  alt="" src={logo} style={{ width: "200px" }} /></Navbar.Brand>
                     <Container>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
                             <Nav className="me-auto">
                             </Nav>
                             <Nav>
-                                <Button variant="light" onClick={this.logout}>Logout</Button>
+                                <Button variant="link"  onClick={this.logout}><img alt="" src={logout} style={{ width: "50px" }} /></Button>
                             </Nav>
                         </Navbar.Collapse>
                     </Container>

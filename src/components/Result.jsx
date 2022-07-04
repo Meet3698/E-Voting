@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Alert, Button, Container, Form, Table, Row, Col } from "react-bootstrap";
+import { Button, Container, Form, Table, Row, Col } from "react-bootstrap";
 import { Signature } from "starkbank-ecdsa";
 import election from "../election";
 import web3 from "../web3"
@@ -130,12 +130,13 @@ class Result extends Component {
 
         return (
             <div>
-                <Container className="mt-5">
+                <Container className="mt-3">
                     <Row>
-                        <Col xs={7}>
-                            {this.state.flag ?
-                                <Container >
-                                    <Table striped bordered hover variant="dark">
+                        {this.state.flag ?
+                            <Col>
+
+                                <Container style={{ overflowY: "scroll", height: "80vh" }}>
+                                    <Table hover style={{ boxShadow: "5px 10px 20px" }}>
                                         <thead>
                                             <tr>
                                                 <th>Candidate ID</th>
@@ -152,9 +153,11 @@ class Result extends Component {
                                         </tbody>
                                     </Table>
                                 </Container>
-                                :
-                                <Container >
-                                    <Table striped bordered hover variant="dark">
+                            </Col>
+                            :
+                            <Col>
+                                <Container style={{ overflowY: "scroll", height: "80vh" }}>
+                                    <Table hover style={{ boxShadow: "5px 10px 20px" }}>
                                         <thead>
                                             <tr>
                                                 <th>Candidate ID</th>
@@ -172,15 +175,10 @@ class Result extends Component {
                                             ))}
                                         </tbody>
                                     </Table>
-                                    {this.state.button ?
-                                        <Button onClick={this.view}>View Your Vote</Button>
-                                        :
-                                        <></>
-                                    }
                                 </Container>
-                            }
+                            </Col>
+                        }
 
-                        </Col>
                         {this.state.data ?
                             <Col className="ml-5">
 
@@ -193,7 +191,7 @@ class Result extends Component {
                                     <Form.Label>PRIVATE KEY</Form.Label>
                                     <Form.Control as="textarea" value={this.state.priv_key} rows={7} placeholder="Enter Your Private Key" onChange={event => this.setState({ priv_key: event.target.value })} />
                                 </Form.Group>
-                                <Button onClick={this.verify}>View Your Vote</Button>
+                                <Button style={{ position: "absolute", width: "94%", background: "linear-gradient(91.97deg, #00B3DB -3.9%, rgba(115, 103, 255, 0.63) 52.76%, rgba(173, 0, 255, 0.5) 107.11%)", borderRadius: "5px", color: "white" }} variant="light" type="button" onClick={this.verify}>View Your Vote</Button>
 
                             </Col>
                             :
@@ -202,83 +200,7 @@ class Result extends Component {
 
                     </Row>
                 </Container>
-                {/* <Container className="mt-5"> */}
-                {/* {
-                        this.state.flag ?
-                            this.state.flag1 ?
-                                <Container className="mt-5">
-                                    {this.state.flag2 ?
-                                        this.state.alert ?
-                                            <Alert variant={"success"}>
-                                                Your Vote is Signed and verified
-                                            </Alert>
-                                            :
-                                            <Alert variant={"danger"}>
-                                                Your Vote is not Signed or Private Key is not Correct
-                                            </Alert>
-                                        :
-                                        <>
-                                        </>
-                                    }
-                                    <Form>
-                                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                                            <Form.Control as="textarea" value={this.state.priv_key} rows={6} placeholder="Enter Your Private Key" onChange={event => this.setState({ priv_key: event.target.value })} />
-                                        </Form.Group>
-                                        <Button onClick={this.verify}>Verify</Button>
-                                    </Form>
-
-                                </Container>
-                                :
-                                <Container className="mt-5">
-                                    <Table striped bordered hover variant="dark">
-                                        <thead>
-                                            <tr>
-                                                <th>Candidate ID</th>
-                                                <th>Candidate Name</th>
-                                                <th>Your Address</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>{this.state.vote[0]}</td>
-                                                <td>{this.state.vote[1]}</td>
-                                                <td>{this.state.vote[2]}</td>
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                    <Button onClick={() => this.setState({ flag1: true })}>Verify Your Vote</Button>
-                                </Container>
-                            :
-                            <Container className="mt-5">
-                                <Table striped bordered hover variant="dark">
-                                    <thead>
-                                        <tr>
-                                            <th>Candidate ID</th>
-                                            <th>Candidate Name</th>
-                                            <th>Voter Address</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.state.votes.map((vote) => (
-                                            <tr>
-                                                <td>{vote.candidateId}</td>
-                                                <td>{vote.name}</td>
-                                                <td>{vote.adr}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
-                                {this.state.button ?
-                                    <Button onClick={this.view}>View Your Vote</Button>
-                                    :
-                                    <></>
-
-                                }
-                            </Container>
-                    } */}
-
-                {/* </Container> */}
-            </div>
+            </div >
         )
     }
 }

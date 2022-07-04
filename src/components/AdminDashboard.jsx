@@ -4,6 +4,10 @@ import { Col, Row, Card, Container } from 'react-bootstrap';
 import election from '../election';
 import AdminNavbar from './AdminNavbar';
 import Chart from 'react-apexcharts'
+import pos from '../images/pos.svg'
+import votes from '../images/Vector.svg'
+import candidates from '../images/3-Friends.svg'
+import voters from '../images/Voters.svg'
 
 class AdminDashboard extends Component {
 
@@ -75,53 +79,84 @@ class AdminDashboard extends Component {
             })
         })
     }
+
     render() {
         return (
             <div>
                 <Row>
-                    <Col xs={2} bg="dark" style={{ padding: "0% 0%", fontWeight: "bold", height: "100vh", backgroundColor: "#343b41" }}>
+                    <Col xs={2} style={{ padding: "0% 0%", fontWeight: "bold" }}>
                         <AdminNavbar />
                     </Col>
 
                     <Col xs={10}>
                         <Container>
                             <Row className="mt-3 mb-3">
-                                <Col>
-                                    <Card style={{ padding: "10% 10%", textAlign: "center", backgroundColor: "#181c19" }}>
-                                        <Card.Body style={{ color: "white", textAlign: "left", paddingTop: "0%", paddingLeft: "2%" }}>
-                                            <p style={{ fontWeight: "bold", fontSize: "55px" }}>{this.state.positions.length}</p>
-                                            <h5>No. of Positions</h5>
+                                <Col >
+                                    <Card style={{ textAlign: "center", backgroundColor: "white", boxShadow: "5px 10px 15px" }}>
+                                        <Card.Body style={{ color: "#5065A8", textAlign: "left" }}>
+                                            <Row>
+                                                <Col xs={9}>
+                                                    <h5>No. of Positions </h5>
+                                                    <h2 style={{ fontWeight: "bold" }}>{this.state.positions.length}</h2>
+                                                </Col >
+                                                <Col xs={3}>
+                                                    <img src={pos} width="100%" alt=""/>
+                                                </Col>
+                                            </Row>
                                         </Card.Body>
                                     </Card>
                                 </Col>
                                 <Col>
-                                    <Card style={{ padding: "10% 10%", textAlign: "center", backgroundColor: "#343b41" }}>
-                                        <Card.Body style={{ color: "white", textAlign: "left", paddingTop: "0%", paddingLeft: "2%" }}>
-                                            <p style={{ fontWeight: "bold", fontSize: "55px" }}>{this.state.candidates.length}</p>
-                                            <h5>No. of Candidates</h5>
+                                    <Card style={{ textAlign: "center", backgroundColor: "white", boxShadow: "5px 10px 15px" }}>
+                                        <Card.Body style={{ color: "#5065A8", textAlign: "left" }}>
+                                            <Row>
+                                                <Col xs={9}>
+                                                    <h5>Total Candidates </h5>
+                                                    <h2 style={{ fontWeight: "bold" }}>{this.state.candidates.length}</h2>
+                                                </Col >
+                                                <Col xs={3}>
+                                                    <img src={candidates} width="100%" alt=""/>
+                                                </Col>
+                                            </Row>
                                         </Card.Body>
                                     </Card>
                                 </Col>
                                 <Col>
-                                    <Card style={{ padding: "10% 10%", textAlign: "center", backgroundColor: "#343b41" }}>
-                                        <Card.Body style={{ color: "white", textAlign: "left", paddingTop: "0%", paddingLeft: "2%" }}>
-                                            <p style={{ fontWeight: "bold", fontSize: "55px" }}>{this.state.voters.length}</p>
-                                            <h5>Total Voters</h5>
+                                    <Card style={{ textAlign: "center", backgroundColor: "white", boxShadow: "5px 10px 15px" }}>
+                                        <Card.Body style={{ color: "#5065A8", textAlign: "left" }}>
+                                            <Row>
+                                                <Col xs={9}>
+                                                    <h5>Total Voters </h5>
+                                                    <h2 style={{ fontWeight: "bold" }}>{this.state.voters.length}</h2>
+                                                </Col >
+                                                <Col xs={3}>
+                                                    <img src={voters} width="100%" alt=""/>
+                                                </Col>
+                                            </Row>
+
+
                                         </Card.Body>
                                     </Card>
                                 </Col>
                                 <Col>
-                                    <Card style={{ padding: "10% 10%", textAlign: "center", backgroundColor: "#181c19" }}>
-                                        <Card.Body style={{ color: "white", textAlign: "left", paddingTop: "0%", paddingLeft: "2%" }}>
-                                            <p style={{ fontWeight: "bold", fontSize: "55px" }}>{this.state.voted.length}</p>
-                                            <h5>Voters Voted</h5>
+                                    <Card style={{ textAlign: "center", backgroundColor: "white", boxShadow: "5px 10px 15px" }}>
+                                        <Card.Body style={{ color: "#5065A8", textAlign: "left" }}>
+                                            <Row>
+                                                <Col xs={9}>
+                                                    <h5>Total Voted </h5>
+                                                    <h2 style={{ fontWeight: "bold" }}>{this.state.voted.length}</h2>
+                                                </Col >
+                                                <Col xs={3}>
+                                                    <img src={votes} width="100%" alt="" />
+                                                </Col>
+                                            </Row>
                                         </Card.Body>
                                     </Card>
                                 </Col>
                             </Row>
                             <Row className="mt-3 mb-3">
-                                <Col>
-                                    <Card style={{textAlign: "center" }}>
+                                <Col >
+                                    <Card style={{ textAlign: "center", boxShadow: "5px 10px 15px" }}>
                                         <Chart options={this.state.options} series={this.state.series} type="bar" height={300} />
                                     </Card>
                                 </Col>

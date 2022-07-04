@@ -1,13 +1,13 @@
 import axios from "axios";
 import { Component } from "react";
-import { Alert, Button, Container, Form, Card, Row, Col } from "react-bootstrap";
+import { Alert, Button, Form, Row, Col } from "react-bootstrap";
 import Cookies from 'universal-cookie';
 import AuthenticationService from "./AuthenticationService";
 import ellipticcurve from "starkbank-ecdsa";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import img from '../images/voting.webp'
-
+import img from '../images/login.png'
+import key from '../images/key.png'
 var PrivateKey = ellipticcurve.PrivateKey;
 
 class Voter extends Component {
@@ -37,7 +37,7 @@ class Voter extends Component {
     };
 
     dashboard = () => {
-        if (this.state.set_key !== false){
+        if (this.state.set_key !== false) {
             confirmAlert({
                 title: 'Have You Copy Keys?',
                 message: 'if not then you cannot sign your vote',
@@ -53,7 +53,7 @@ class Voter extends Component {
                 ]
             });
         }
-        else{
+        else {
             confirmAlert({
                 title: 'Please generate the keys',
             });
@@ -118,98 +118,104 @@ class Voter extends Component {
 
     render() {
         return (
-            <div>
+            <div >
                 {
                     this.state.flag ?
-                        <div className="ml-5 mr-5">
-                            <div className="mb-3 mt-3">
-                                <h5>Now it's time to generate your keys which can help you to protect your privacy.</h5>
-                                <h5>When you're voting, you will use your public key and private key to vote. The system will save your public key into our database.</h5>
-                                <h5>Please attention that your <span style={{color:"red"}}>PRIVATE KEY WILL NOT SAVE INTO OUR SYSTEM.</span></h5>
-                                <h5>So, please save your private key value into your computer and keep it privately.</h5>
-                                <h5>If you lost or forgot your provate key before the vote date, you can generate a new one and save the new public key into our system.</h5>
-                            </div>
+                        <div style={{ margin: "1% 5% 0% 5%", borderRadius: "10px" }}>
+                            <Row style={{ margin: "2%" }}>
+                                <Col xs={8}>
+                                    <Row style={{ margin: "0% 0% 3% 0%" }}>
 
-                            <Row >
-                                <Col xs={6} >
-                                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                                        <Form.Label>PUBLIC KEY</Form.Label>
-                                        <Form.Control disabled as="textarea" value={this.state.pub_key} rows={10} />
-                                    </Form.Group>
+                                        <div>
+                                            <h5>Now it's time to generate your keys which can help you to protect your privacy.</h5>
+                                            <h5>When you're voting, you will use your public key and private key to vote. The system will save your public key into our database.</h5>
+                                            <h5>Please attention that your <span style={{ color: "red" }}>PRIVATE KEY WILL NOT SAVE INTO OUR SYSTEM.</span></h5>
+                                            <h5>So, please save your private key value into your computer and keep it privately.</h5>
+                                            <h5>If you lost or forgot your provate key before the vote date, you can generate a new one and save the new public key into our system.</h5>
+
+                                        </div>
+                                    </Row>
+                                    <Row style={{ margin: "0% 0% 3% 0%" }} >
+
+                                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                            <Form.Label>PUBLIC KEY</Form.Label>
+                                            <Form.Control disabled as="textarea" value={this.state.pub_key} rows={5} style={{ borderRadius: "10px" }} />
+                                        </Form.Group>
+                                    </Row>
+                                    <Row style={{ margin: "0% 0% 3% 0%" }} >
+
+
+                                        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+                                            <Form.Label>PRIVATE KEY</Form.Label>
+                                            <Form.Control as="textarea" value={this.state.priv_key} rows={5} style={{ borderRadius: "10px" }} />
+                                        </Form.Group>
+
+
+                                    </Row>
+                                    <div style={{ position: "absolute", marginLeft: "62%" }}>
+                                        <Button style={{ borderRadius: "5px", borderColor: "#AD00FF", color: "#AD00FF" }} variant="light" className="mr-3" onClick={this.dashboard}>Dashboard</Button>
+                                        <Button style={{ background: "linear-gradient(91.97deg, #00B3DB -3.9%, rgba(115, 103, 255, 0.63) 52.76%, rgba(173, 0, 255, 0.5) 107.11%)", borderRadius: "5px", color: "white" }} variant="light" type="button" onClick={this.generate_key}>
+                                            Generate Keys
+                                        </Button>
+                                    </div>
                                 </Col>
 
-                                <Col xs={6} >
-                                    <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                                        <Form.Label>PRIVATE KEY</Form.Label>
-                                        <Form.Control as="textarea" value={this.state.priv_key} rows={10} />
-                                    </Form.Group>
+                                <Col xs={4}>
+                                    <img src={key} width="429px" height="690pxpx" alt="" />
                                 </Col>
-
                             </Row>
-                            <Button variant="primary" type="button" onClick={this.generate_key}>
-                                Generate Keys
-                            </Button>
-                            <Button className="ml-3" onClick={this.dashboard}>Dashboard</Button>
-                        </div >
-                        // <Container style={{ padding: "3%" }}>
-                        //     <Form>
-                        //         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                        //             <Form.Label>PRIVATE KEY</Form.Label>
-                        //             <Form.Control as="textarea" value={this.state.priv_key} rows={6} />
-                        //         </Form.Group>
-
-                        //         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-                        //             <Form.Label>PUBLIC KEY</Form.Label>
-                        //             <Form.Control as="textarea" value={this.state.pub_key} rows={6} />
-                        //         </Form.Group>
-
-                        //         <Button onClick={this.dashboard}>Dashboard</Button>
-                        //     </Form>
-                        // </Container>
+                        </div>
                         :
-                        <Container style={{ padding: "3% 15%" }}>
-                            {this.state.alert ?
-                                <Alert variant={"danger"}>
-                                    Invalid Credentials
-                                </Alert>
-                                :
-                                <></>
-                            }
+                        <div style={{ margin: "1% 22% 0% 22%", boxShadow: "5px 10px 20px", borderRadius: "10px" }}>
+                            <Row >
+                                <Col >
+                                    <Row style={{ height: "40%", textAlign: "center" }}>
+                                        <h1 style={{ margin: "30% 0% 0% 5%" }}>Welcome</h1>
 
-                            <Card>
-                                <Card.Img variant="top" src={img} />
-                                <Card.Body>
-                                    <Form>
-                                        <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-                                            <Form.Label column sm={2}>
-                                                Name
-                                            </Form.Label>
-                                            <Col sm={10}>
-                                                <Form.Control type="text" name="name" value={this.state.name} placeholder="Enter Name as per Voter Card" onChange={event => this.setState({ name: event.target.value })} />
-                                            </Col>
-                                        </Form.Group>
+                                    </Row>
+                                    <Row style={{ height: "50%", padding: "10%" }}>
+                                        <Row >
 
-                                        <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                                            <Form.Label column sm={2}>
-                                                VoterID
-                                            </Form.Label>
-                                            <Col sm={10}>
-                                                <Form.Control type="text" name="id" value={this.state.id} placeholder="Enter Voter ID" onChange={event => this.setState({ id: event.target.value })} />
-                                            </Col>
-                                        </Form.Group>
+                                            {this.state.alert ?
+                                                // alert("Invalid Credentials")
+                                                <Alert variant={"danger"} style={{ marginLeft: "15%" }}>
+                                                    Invalid Credentials
+                                                </Alert>
+                                                :
+                                                <></>
+                                            }
+                                        </Row>
+                                        <Row style={{ marginLeft: "5%", padding: "5%" }}>
 
-                                        <Form.Group as={Row} className="mb-3">
-                                            <Col sm={{ span: 10, offset: 2 }}>
-                                                <Button variant="primary" type="button" onClick={this.login}>
-                                                    Login
-                                                </Button>
-                                            </Col>
-                                        </Form.Group>
-                                    </Form>
-                                </Card.Body>
-                            </Card>
+                                            <Form>
+                                                <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
+                                                    <Col >
+                                                        <Form.Control type="text" name="name" value={this.state.name} placeholder="Name as per Voter Card" onChange={event => this.setState({ name: event.target.value })} />
+                                                    </Col>
+                                                </Form.Group>
 
-                        </Container>
+                                                <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
+                                                    <Col >
+                                                        <Form.Control type="text" name="id" value={this.state.id} placeholder="Voter ID" onChange={event => this.setState({ id: event.target.value })} />
+                                                    </Col>
+                                                </Form.Group>
+
+                                                <Form.Group as={Row} className="mb-3">
+                                                    <Col >
+                                                        <Button style={{ position: "absolute", width: "90%", background: "linear-gradient(91.97deg, #00B3DB -3.9%, rgba(115, 103, 255, 0.63) 52.76%, rgba(173, 0, 255, 0.5) 107.11%)", borderRadius: "5px", color: "white" }} variant="light" type="button" onClick={this.login}>
+                                                            Login
+                                                        </Button>
+                                                    </Col>
+                                                </Form.Group>
+                                            </Form>
+                                        </Row>
+                                    </Row>
+                                </Col>
+                                <Col>
+                                    <img src={img} alt="" width="100%" />
+                                </Col>
+                            </Row>
+                        </div>
                 }
 
 

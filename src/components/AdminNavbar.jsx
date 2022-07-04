@@ -1,5 +1,9 @@
 import { Component } from "react";
 import { ListGroup } from "react-bootstrap";
+import dash from '../images/Combined-Shapedash.png'
+import votes from '../images/Vector.png'
+import candidates from '../images/3-Friends.png'
+import voters from '../images/Combined-Shape.png'
 
 class AdminNavbar extends Component {
 
@@ -25,15 +29,12 @@ class AdminNavbar extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{margin:"5%"}}>
                 <ListGroup variant="flush">
-                    <ListGroup.Item variant="dark" style={{ backgroundColor: "#343b41", color: "white", height: "60px", border: "solid #181c19 1px" }}>Admin</ListGroup.Item>
-                    <ListGroup.Item variant="dark" style={{ backgroundColor: "#181c19", color: "#7d827e", height: "60px", border: "solid #181c19 1px" }}>Reports</ListGroup.Item>
-                    <ListGroup.Item variant="dark" style={{ backgroundColor: "#343b41", color: "white", height: "60px", border: "solid #181c19 1px" }} onClick={this.dashboard}>Dashboard</ListGroup.Item>
-                    <ListGroup.Item variant="dark" style={{ backgroundColor: "#343b41", color: "white", height: "60px", border: "solid #181c19 1px" }} onClick={this.votes}>Votes</ListGroup.Item>
-                    <ListGroup.Item variant="dark" style={{ backgroundColor: "#181c19", color: "#7d827e", height: "60px", border: "solid #181c19 1px" }}>Manage</ListGroup.Item>
-                    <ListGroup.Item variant="dark" style={{ backgroundColor: "#343b41", color: "white", height: "60px", border: "solid #181c19 1px" }} onClick={this.candidate}>Candidates</ListGroup.Item>
-                    <ListGroup.Item variant="dark" style={{ backgroundColor: "#343b41", color: "white", height: "60px", border: "solid #181c19 1px" }} onClick={this.voter}>Voters</ListGroup.Item>
+                    <ListGroup.Item variant="light" style={{ backgroundColor: "white", color: "#5065A8", height: "60px", border: "solid white 1px" }} onClick={this.dashboard}><img src={dash} alt="" />&nbsp;&nbsp;Dashboard</ListGroup.Item>
+                    <ListGroup.Item variant="light" style={{ backgroundColor: "white", color: "#5065A8", height: "60px", border: "solid white 1px" }} onClick={this.candidate}><img src={candidates}  alt=""/>&nbsp;&nbsp;Candidates</ListGroup.Item>
+                    <ListGroup.Item variant="light" style={{ backgroundColor: "white", color: "#5065A8", height: "60px", border: "solid white 1px" }} onClick={this.voter}><img src={voters} alt=""/>&nbsp;&nbsp;Voters</ListGroup.Item>
+                    <ListGroup.Item variant="light" style={{ backgroundColor: "white", color: "#5065A8", height: "60px", border: "solid white 1px" }} onClick={this.votes}><img src={votes} alt=""/>&nbsp;&nbsp;Votes</ListGroup.Item>
                 </ListGroup>
             </div>
         );

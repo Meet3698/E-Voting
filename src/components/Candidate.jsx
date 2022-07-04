@@ -3,6 +3,7 @@ import { Button, Card, Col, Container, Form, Row, Table } from "react-bootstrap"
 import AdminNavbar from "./AdminNavbar";
 import election from '../election'
 import web3 from '../web3'
+import side from '../images/side.png'
 
 class Candidate extends Component {
 
@@ -47,64 +48,74 @@ class Candidate extends Component {
         return (
             <div >
                 <Row>
-                    <Col xs={2} bg="dark" style={{ padding: "0% 0%", fontWeight: "bold", height: "100vh", backgroundColor: "#343b41" }}>
+                    <Col xs={2} style={{ padding: "0% 0%", fontWeight: "bold" }}>
                         <AdminNavbar />
                     </Col>
-                    {this.state.flag ? <Container style={{ padding: "4% 10%" }}>
-                        <Card>
-                            <Card.Body>
-                                <Form onSubmit={this.onSubmit}>
-                                    <Form.Group className="mb-3">
-                                        <Form.Control type="text" name="name" value={this.state.name} onChange={event => this.setState({ name: event.target.value })} placeholder="Name of Candidate" />
-                                    </Form.Group>
+                    <Col xs={10} >
+                        {this.state.flag ?
+                            <Row style={{margin:"0% 5% 0% 5%",boxShadow: "5px 10px 20px", borderRadius: "10px"}}>
 
-                                    <Form.Group className="mb-3">
-                                        <Form.Control type="text" name="partyName" value={this.state.partyName} onChange={event => this.setState({ partyName: event.target.value })} placeholder="Party Name" />
-                                    </Form.Group>
+                                <Col xs={7} style={{paddingTop: "15%", textAlign: "center" }}>
+                                    <Form onSubmit={this.onSubmit}>
+                                        <Form.Group className="mb-3">
+                                            <Form.Control type="text" name="name" value={this.state.name} onChange={event => this.setState({ name: event.target.value })} placeholder="Name of Candidate" />
+                                        </Form.Group>
 
-                                    <Form.Group className="mb-3">
-                                        <Form.Control type="text" name="position" value={this.state.position} onChange={event => this.setState({ position: event.target.value })} placeholder="Position" />
-                                    </Form.Group>
+                                        <Form.Group className="mb-3">
+                                            <Form.Control type="text" name="partyName" value={this.state.partyName} onChange={event => this.setState({ partyName: event.target.value })} placeholder="Party Name" />
+                                        </Form.Group>
 
-                                    <Button variant="primary" type="submit" >
-                                        Add Candidate
-                                    </Button>
-                                </Form>
-                            </Card.Body>
-                        </Card>
-                    </Container>
-                        :
-                        <Container style={{ padding: "3% 2%" }}>
-                            <Col xs={10} >
-                                <Table striped bordered hover variant="dark">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Candidate Name</th>
-                                            <th>Party Name</th>
-                                            <th>Position</th>
-                                            <th>Vote Count</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.state.candidates.map((candidate) => (
+                                        <Form.Group className="mb-3">
+                                            <Form.Control type="text" name="position" value={this.state.position} onChange={event => this.setState({ position: event.target.value })} placeholder="Position" />
+                                        </Form.Group>
+
+                                        <div style={{ position: "absolute", marginLeft: "73%" }}>
+                                            <Button style={{ background: "linear-gradient(91.97deg, #00B3DB -3.9%, rgba(115, 103, 255, 0.63) 52.76%, rgba(173, 0, 255, 0.5) 107.11%)", borderRadius: "5px", color: "white" }} variant="light" type="submit">
+                                                Add Candidate
+                                            </Button>
+                                        </div>
+                                    </Form>
+                                </Col>
+
+                                <Col xs={5}>
+                                    <img src={side}  alt="" width="410px" height="500px"/>
+                                </Col>
+                            </Row>
+                            :
+
+                            <Col xs={12} >
+                                <Container className="mt-3" style={{ overflowY: "scroll", height: "80vh" }}>
+                                    <Table hover style={{ boxShadow: "5px 10px 20px" }}>
+                                        <thead>
                                             <tr>
-                                                <td>{candidate.id}</td>
-                                                <td>{candidate.name}</td>
-                                                <td>{candidate.patryName}</td>
-                                                <td>{candidate.position}</td>
-                                                <td>{candidate.voteCount}</td>
+                                                <th>ID</th>
+                                                <th>Candidate Name</th>
+                                                <th>Party Name</th>
+                                                <th>Position</th>
+                                                <th>Vote Count</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </Table>
-                                <Button variant="primary" onClick={this.submit} >
-                                    Add Candidate
-                                </Button>
+                                        </thead>
+                                        <tbody>
+                                            {this.state.candidates.map((candidate) => (
+                                                <tr>
+                                                    <td>{candidate.id}</td>
+                                                    <td>{candidate.name}</td>
+                                                    <td>{candidate.patryName}</td>
+                                                    <td>{candidate.position}</td>
+                                                    <td>{candidate.voteCount}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </Table>
+                                    <div style={{ position: "absolute", marginLeft: "82%" }}>
+                                        <Button style={{ background: "linear-gradient(91.97deg, #00B3DB -3.9%, rgba(115, 103, 255, 0.63) 52.76%, rgba(173, 0, 255, 0.5) 107.11%)", borderRadius: "5px", color: "white" }} variant="light" type="button" onClick={this.submit}>
+                                            Add Candidate
+                                        </Button>
+                                    </div>
+                                </Container>
                             </Col>
-                        </Container>
-                    }
-
+                        }
+                    </Col>
                 </Row>
             </div >
         );
